@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.appnexus.opensdk.ANAdResponseInfo;
 import com.appnexus.opensdk.NativeAdEventListener;
 import com.appnexus.opensdk.NativeAdRequest;
 import com.appnexus.opensdk.NativeAdRequestListener;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAdFailed(ResultCode errorcode) {
+            public void onAdFailed(ResultCode errorcode, ANAdResponseInfo info) {
                 TextView noAd = new TextView(MainActivity.this);
                 noAd.setText("Request failed due to " + errorcode.name());
                 noAd.setTextSize(20);
