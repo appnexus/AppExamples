@@ -43,14 +43,18 @@ class MainActivity : AppCompatActivity(), AdListener {
 
         //banner.autoRefreshInterval=0; // turn off autorefresh
 
-        // Allow Native Demand for this banner placement
+        // Allow Native Demand for this banner placement.
         banner.allowNativeDemand = true
-        banner.allowVideoDemand = false // Disable video for this example
-        banner.setAllowBannerDemand(true) // Disable HTML ads for this example
 
-        // Enable Native rendering in the SDK.
+        // Enable Native rendering in the SDK. Default is turned off and native renderer will not be used even if returned
         // If native rendering is not enabled in the SDK, even if a renderer is present it wont be used. Instead NativeAdResponse will be returned via onAdLoaded(NativeAdResponse) and the app needs to display it natively
         banner.enableNativeRendering(true)
+
+
+        banner.allowVideoDemand = false // Disable video for this example. By default it is turned off
+        banner.setAllowBannerDemand(false) // Disable HTML ads for this example. By default it is turned on
+
+
 
         // If only size is set then it is used as the primary size for native rendering.
         // banner.setAdSize(300, 250)

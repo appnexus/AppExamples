@@ -1,0 +1,18 @@
+PODS:
+  - AppNexusSDK (7.13):
+    - AppNexusSDK/AppNexusSDK (= 7.13)
+  - AppNexusSDK/AppNexusSDK (7.13)
+
+DEPENDENCIES:
+  - AppNexusSDK
+
+SPEC REPOS:
+  trunk:
+    - AppNexusSDK
+
+SPEC CHECKSUMS:
+  AppNexusSDK: f3332476aa824408e113436086b5032476e65cf8
+
+PODFILE CHECKSUM: 913baa40a8ce232ac5ae21fab25ca1d9845e06c8
+
+COCOAPODS: 1.10.1
