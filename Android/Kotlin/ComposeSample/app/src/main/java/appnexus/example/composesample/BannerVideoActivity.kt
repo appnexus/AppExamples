@@ -1,35 +1,19 @@
 package appnexus.example.composesample
 
-import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.widget.MediaController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.viewinterop.AndroidViewBinding
-import appnexus.example.composesample.databinding.VideoAdAdctivtyBinding
 import appnexus.example.composesample.ui.theme.ComposeSampleTheme
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
 import com.appnexus.opensdk.*
-import com.appnexus.opensdk.instreamvideo.Quartile
-import com.appnexus.opensdk.instreamvideo.VideoAd
-import com.appnexus.opensdk.instreamvideo.VideoAdPlaybackListener
 
 
 class BannerVideoActivity : ComponentActivity() {
@@ -41,18 +25,19 @@ class BannerVideoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+        // Set a placement id.
         bannerAdView.placementID=Constants.PLACEMENT_ID
+
+        // Get a 300x250 ad.
         bannerAdView.setAdSize(300,250)
 
-
-
+        //Set ad listener
         val adListener= object: AdListener{
             override fun onAdLoaded(p0: AdView?) {
-
             }
 
             override fun onAdLoaded(p0: NativeAdResponse?) {
-
             }
 
             override fun onAdRequestFailed(p0: AdView?, p1: ResultCode?) {
@@ -79,29 +64,33 @@ class BannerVideoActivity : ComponentActivity() {
 
         setContent {
 
-
             ComposeSampleTheme {
                 Surface(color = MaterialTheme.colors.background) {
 
                     Column {
-
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .height(40.dp)
+                                .fillMaxWidth()
+                                .background(color = MaterialTheme.colors.primary)
+                        ) {
+                            //Add title
+                            Text(text = "Banner Video Ad", color = MaterialTheme.colors.background)
+                        }
 
                         AndroidView(factory = { context ->
                             bannerAdView.apply {
+
+                                //Load the Ad
                                 this.loadAd()
                             }
                         })
                     }
-
-
                 }
             }
         }
-
     }
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 }
 

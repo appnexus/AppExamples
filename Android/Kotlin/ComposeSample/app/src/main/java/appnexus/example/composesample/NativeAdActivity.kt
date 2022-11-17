@@ -34,6 +34,7 @@ class NativeAdActivity : ComponentActivity(), NativeAdRequestListener, NativeAdE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             composeView = ComposeView(this)
             with(nativeAdRequest) {
@@ -55,9 +56,8 @@ class NativeAdActivity : ComponentActivity(), NativeAdRequestListener, NativeAdE
                                 .fillMaxWidth()
                                 .background(color = MaterialTheme.colors.primary)
                         ) {
+                            //Add title
                             Text(text = "Native Ad", color = MaterialTheme.colors.background)
-
-
                         }
                         AndroidView(factory = {
                             composeView.apply {
@@ -67,26 +67,20 @@ class NativeAdActivity : ComponentActivity(), NativeAdRequestListener, NativeAdE
                                 }
                             }
                         })
-
                     }
-
-
                 }
             }
         }
-
-
     }
 
     override fun onDestroy() {
         NativeAdSDK.unRegisterTracking(composeView)
-
         super.onDestroy()
     }
 
     override fun onAdLoaded(p0: NativeAdResponse?) {
 
-        showToast("Add has been loaded successfully.")
+        showToast("Ad has been loaded successfully.")
 
         nativeAdResponse = p0
 
@@ -121,19 +115,12 @@ class NativeAdActivity : ComponentActivity(), NativeAdRequestListener, NativeAdE
                     Image(painter =  rememberImagePainter(data = nativeAdResponse?.image), contentDescription = "Add Image")
                     Image(painter =  rememberImagePainter(data = nativeAdResponse?.icon), contentDescription = "Add Image")
 
-
                     AndroidView(factory = {
                         composeViewClickThrough.apply { }
                     })
-
-
                 }
-
-
             }
-
         }
-
 
         NativeAdSDK.unRegisterTracking(composeView)
         NativeAdSDK.registerTracking(
@@ -142,16 +129,13 @@ class NativeAdActivity : ComponentActivity(), NativeAdRequestListener, NativeAdE
             mutableListOf(composeViewClickThrough) as List<View>?,
             this
         )
-
     }
 
     override fun onAdFailed(p0: ResultCode?, p1: ANAdResponseInfo?) {
-
         showToast(""+p0?.message)
     }
 
     override fun onAdWasClicked() {
-
     }
 
     override fun onAdWasClicked(p0: String?, p1: String?) {
@@ -168,6 +152,4 @@ class NativeAdActivity : ComponentActivity(), NativeAdRequestListener, NativeAdE
 
     override fun onAdExpired() {
     }
-
-
 }

@@ -11,14 +11,19 @@ import androidx.compose.runtime.remember
 import appnexus.example.composesample.ui.theme.ComposeSampleTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ComposeSampleTheme {
-                val adTypes= listOf("Simple Banner", "Native Ad", "Instream Video", "Banner Native Ad", "Banner Video Ad")
+
+                //Add items in list.
+                val adTypes= listOf("Simple Banner", "Native Ad", "Instream Video", "Banner Native Ad", "Banner Video Ad", "Banner LazyColumn")
                 val adTypeList by  remember { mutableStateOf(adTypes) }
                 Surface(color = MaterialTheme.colors.background) {
 
+                    //Add click listener on list.
                     SelectAdTypeView(adTypeList)
                 }
             }
