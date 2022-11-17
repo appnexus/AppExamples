@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -30,6 +29,7 @@ fun SelectAdTypeView(mediaTypeList: List<String>) {
                     .height(50.dp)
                     .background(color = MaterialTheme.colors.primary)
             ) {
+                //Add title
                 Text(text = "Ad Type", color = Color.White)
             }
         }
@@ -41,17 +41,13 @@ fun SelectAdTypeView(mediaTypeList: List<String>) {
                 adType = mediaTypeList[media],
             )
             Divider(color = Color.Black)
-
-
         }
-
-
     }
-
-
 }
 
-
+/**
+ * On click of Ad Type.
+ */
 @Composable
 fun AdTypeRow(modifier: Modifier = Modifier, adType: String) {
     val context = LocalContext.current
@@ -62,35 +58,28 @@ fun AdTypeRow(modifier: Modifier = Modifier, adType: String) {
             .clickable {
 
                 when (adType) {
-                    AppDestinations.Interstitial -> {
 
-                    }
                     AppDestinations.SimpleBanner -> {
                         context.startActivity(Intent(context, SimpleBannerActivity::class.java))
-
 
                     }
                     AppDestinations.NativeAd -> {
                         context.startActivity(Intent(context, NativeAdActivity::class.java))
 
-
                     }
                     AppDestinations.VideoAd -> {
                         context.startActivity(Intent(context, VideoAdActivity::class.java))
-
                     }
                     AppDestinations.BannerNative -> {
                         context.startActivity(Intent(context, BannerNativeActivity::class.java))
-
                     }
                     AppDestinations.BannerVideo->{
                         context.startActivity(Intent(context, BannerVideoActivity::class.java))
-
                     }
-
-
+                    AppDestinations.BannerLazyColumn->{
+                        context.startActivity(Intent(context, BannerLazyColumnActivity::class.java))
+                    }
                 }
-
             },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
@@ -98,7 +87,5 @@ fun AdTypeRow(modifier: Modifier = Modifier, adType: String) {
         Text(
             text = adType,
         )
-
     }
-
 }

@@ -35,9 +35,14 @@ class BannerNativeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Set a placement id.
         bannerAdView.placementID=Constants.PLACEMENT_ID
+
+        // Get a 300x250 ad.
         bannerAdView.setAdSize(300,250)
 
+        //Set ad listener.
         val nativeAdEventListener= object :NativeAdEventListener{
             override fun onAdWasClicked() {
             }
@@ -60,11 +65,10 @@ class BannerNativeActivity : ComponentActivity() {
 
         val adListener = object : AdListener {
             override fun onAdLoaded(p0: AdView?) {
-
             }
 
             override fun onAdLoaded(p0: NativeAdResponse?) {
-                showToast("Add has been loaded successfully.")
+                showToast("Ad has been loaded successfully.")
 
                 nativeAdResponse = p0
 
@@ -103,31 +107,20 @@ class BannerNativeActivity : ComponentActivity() {
                             AndroidView(factory = {
                                 composeViewClickThrough.apply { }
                             })
-
-
                         }
-
-
                     }
-
                 }
-
 
                 NativeAdSDK.unRegisterTracking(composeView)
                 NativeAdSDK.registerTracking(
                     nativeAdResponse,
                     composeView,
                     nativeAdEventListener
-
                 )
-
-
-
             }
 
             override fun onAdRequestFailed(p0: AdView?, p1: ResultCode?) {
                 showToast("${p1?.message}")
-
             }
 
             override fun onAdExpanded(p0: AdView?) {
@@ -166,9 +159,8 @@ class BannerNativeActivity : ComponentActivity() {
                                 .fillMaxWidth()
                                 .background(color = MaterialTheme.colors.primary)
                         ) {
+                            //Add title
                             Text(text = " Banner Native Ad", color = MaterialTheme.colors.background)
-
-
                         }
                         AndroidView(factory = {
                             composeView.apply {
@@ -180,21 +172,13 @@ class BannerNativeActivity : ComponentActivity() {
                         })
 
                     }
-
-
                 }
             }
         }
-
-
-
     }
-
 
     override fun onDestroy() {
         NativeAdSDK.unRegisterTracking(composeView)
-
         super.onDestroy()
-
     }
 }
