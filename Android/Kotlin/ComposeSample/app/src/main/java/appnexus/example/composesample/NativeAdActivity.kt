@@ -4,20 +4,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import appnexus.example.composesample.ui.theme.ComposeSampleTheme
 import coil.compose.rememberImagePainter
@@ -87,15 +87,27 @@ class NativeAdActivity : ComponentActivity(), NativeAdRequestListener, NativeAdE
         composeViewClickThrough = ComposeView(this)
         composeViewClickThrough.apply {
             setContent {
-                Button(
-                    onClick = {
-
-                    },
-                    enabled = true,
-                    border = BorderStroke(width = 1.dp, brush = SolidColor(Color.Blue)),
-                    shape = MaterialTheme.shapes.medium,
-                ) {
-                    nativeAdResponse?.callToAction?.let { Text(text = it, color = Color.White) }
+                nativeAdResponse?.callToAction?.let {
+                    // Using Box here, since the Xandr SDK does not support Button and Surface as clickables
+                    Box(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .widthIn(min = 64.dp)
+                            .background(
+                                color = MaterialTheme.colors.primary,
+                                shape = RoundedCornerShape(4.dp)),
+                    ) {
+                        Text(
+                            text = it,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(16.dp),
+                            style = TextStyle(
+                                color = MaterialTheme.colors.onPrimary,
+                                background = MaterialTheme.colors.primary
+                            )
+                        )
+                    }
                 }
             }
         }
