@@ -5,12 +5,12 @@ target 'MacOSSimpleIntegrationSwift' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'AppNexusSDK', '9.0.0'
+  pod 'AppNexusSDK'
 end
 
 target 'SimpleIntegrationSwift' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'AppNexusSDK', '9.0.0'
+  pod 'AppNexusSDK'
 end
