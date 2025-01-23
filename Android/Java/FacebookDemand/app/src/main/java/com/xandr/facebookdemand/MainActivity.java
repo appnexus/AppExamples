@@ -16,6 +16,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.appnexus.opensdk.ANAdResponseInfo;
+import com.appnexus.opensdk.ANGDPRSettings;
+import com.appnexus.opensdk.InitListener;
 import com.appnexus.opensdk.NativeAdEventListener;
 import com.appnexus.opensdk.NativeAdRequest;
 import com.appnexus.opensdk.NativeAdRequestListener;
@@ -23,6 +25,7 @@ import com.appnexus.opensdk.NativeAdResponse;
 import com.appnexus.opensdk.NativeAdSDK;
 import com.appnexus.opensdk.ResultCode;
 import com.appnexus.opensdk.SDKSettings;
+import com.appnexus.opensdk.XandrAd;
 import com.appnexus.opensdk.csr.FBNativeBannerAdResponse;
 import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.AudienceNetworkAds;
@@ -46,13 +49,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupSDKs() {
-        SDKSettings.useHttps(true);
+       // SDKSettings.useHttps(true);
         AudienceNetworkAds.buildInitSettings(this).withInitListener(new AudienceNetworkAds.InitListener() {
             @Override
             public void onInitialized(AudienceNetworkAds.InitResult initResult) {
                 // Do something or remove this listener
             }
         }).initialize();
+
+        XandrAd.init(10094, this, true, true, new InitListener() {
+            @Override
+            public void onInitFinished(boolean b) {
+
+            }
+        });
     }
 
     private void removePreviousAd() {
@@ -95,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAdFailed(ResultCode errorcode, ANAdResponseInfo info) {
                 TextView noAd = new TextView(MainActivity.this);
-                noAd.setText("Request failed due to " + errorcode.name());
+                noAd.setText("Request failed due to " + errorcode.getMessage());
                 noAd.setTextSize(20);
                 noAd.setGravity(Gravity.CENTER);
                 noAd.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -138,6 +148,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAdWasClicked(String clickUrl, String fallbackURL) {
+
+            }
+
+            @Override
+            public void onAdImpression() {
+
+            }
+
+            @Override
+            public void onAdAboutToExpire() {
+
+            }
+
+            @Override
+            public void onAdExpired() {
 
             }
         });
@@ -190,6 +215,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAdWasClicked(String clickUrl, String fallbackURL) {
+
+            }
+
+            @Override
+            public void onAdImpression() {
+
+            }
+
+            @Override
+            public void onAdAboutToExpire() {
+
+            }
+
+            @Override
+            public void onAdExpired() {
 
             }
         });
