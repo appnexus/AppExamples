@@ -1,0 +1,13 @@
+platform :ios, '12.0'
+
+target 'MacOSSimpleIntegrationSwift' do
+  use_frameworks!
+
+  pod 'AppNexusSDK'
+end
+
+target 'SimpleIntegrationSwift' do
+  use_frameworks!
+
+  pod 'AppNexusSDK'
+end
