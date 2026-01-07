@@ -1,17 +1,19 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.0" // this version matches your Kotlin version
 }
 
 android {
-    compileSdk 31
+    compileSdk 36
 
     defaultConfig {
         applicationId "appnexus.example.composesample"
         minSdk 21
-        targetSdk 31
+        targetSdk 36
         versionCode 1
         versionName "1.0"
+        namespace "appnexus.example.composesample"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -31,7 +33,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        useIR = true
     }
     buildFeatures {
         compose true
@@ -40,7 +41,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion '1.5.10'
+        kotlinCompilerVersion '2.2.0'
     }
     packagingOptions {
         resources {
