@@ -7,16 +7,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.appnexus.opensdk.ANAdResponseInfo;
-import com.appnexus.opensdk.ANGDPRSettings;
 import com.appnexus.opensdk.InitListener;
 import com.appnexus.opensdk.NativeAdEventListener;
 import com.appnexus.opensdk.NativeAdRequest;
@@ -24,7 +22,6 @@ import com.appnexus.opensdk.NativeAdRequestListener;
 import com.appnexus.opensdk.NativeAdResponse;
 import com.appnexus.opensdk.NativeAdSDK;
 import com.appnexus.opensdk.ResultCode;
-import com.appnexus.opensdk.SDKSettings;
 import com.appnexus.opensdk.XandrAd;
 import com.appnexus.opensdk.csr.FBNativeBannerAdResponse;
 import com.facebook.ads.AdOptionsView;
@@ -72,18 +69,20 @@ public class MainActivity extends AppCompatActivity {
                 fbresponse.unregisterView();
                 this.response = null;
             } else {
-                NativeAdSDK.unRegisterTracking(findViewById(R.id.native_ad_view));
+                View adView = findViewById(R.id.native_ad_view);
+                if (adView != null) {
+                    NativeAdSDK.unRegisterTracking(adView);
+                }
             }
         }
-        NativeAdLayout nativeAdLayout = findViewById(R.id.native_banner);
-        nativeAdLayout.removeAllViews();
+        ConstraintLayout adContainer = findViewById(R.id.ad_container);
+        if (adContainer != null) {
+            adContainer.removeAllViews();
+        }
     }
 
     public void loadAd(View view) {
-        String placemendId = "17823252";
-        if (view.getId() != R.id.load_fan) {
-            placemendId = "18626248";
-        }
+        String placemendId = "17058950";
         removePreviousAd();
         request = new NativeAdRequest(MainActivity.this, placemendId);
         request.shouldLoadImage(true);
@@ -109,29 +108,32 @@ public class MainActivity extends AppCompatActivity {
                 noAd.setTextSize(20);
                 noAd.setGravity(Gravity.CENTER);
                 noAd.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                NativeAdLayout nativeAdLayout = findViewById(R.id.native_banner);
-                nativeAdLayout.addView(noAd);
+                ConstraintLayout adContainer = findViewById(R.id.ad_container);
+                adContainer.addView(noAd);
             }
         });
         request.loadAd();
     }
 
     private void inflateAndRegisterNonFB(NativeAdResponse response) {
-        FrameLayout adFrame = findViewById(R.id.native_banner);
+        ConstraintLayout adFrame = findViewById(R.id.ad_container);
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-        LinearLayout adView = (LinearLayout) inflater.inflate(R.layout.native_banner, adFrame, false);
-        adView.setId(R.id.native_ad_view);
+        ConstraintLayout adView = (ConstraintLayout) inflater.inflate(R.layout.native_ad_layout, adFrame, false);
         adFrame.addView(adView);
 
-        TextView nativeAdTitle = adView.findViewById(R.id.native_ad_title);
-        TextView sponsoredLabel = adView.findViewById(R.id.native_ad_sponsored_label);
-        ImageView nativeAdIconView = adView.findViewById(R.id.native_icon_view);
-        Button nativeAdCallToAction = adView.findViewById(R.id.native_ad_call_to_action);
+        TextView nativeAdTitle = adView.findViewById(R.id.an_title);
+        TextView nativeAdDescription = adView.findViewById(R.id.an_description);
+        TextView sponsoredLabel = adView.findViewById(R.id.an_sponsoredBy);
+        ImageView nativeAdIconView = adView.findViewById(R.id.an_icon);
+        ImageView nativeImage = adView.findViewById(R.id.an_image);
+        Button nativeAdCallToAction = adView.findViewById(R.id.an_clickThrough);
 
 
         nativeAdTitle.setText(response.getTitle());
+        nativeAdDescription.setText(response.getDescription());
         sponsoredLabel.setText(response.getSponsoredBy());
         nativeAdIconView.setImageBitmap(response.getIcon());
+        nativeImage.setImageBitmap(response.getImage());
         nativeAdCallToAction.setText(response.getCallToAction());
         nativeAdCallToAction.setVisibility(!TextUtils.isEmpty(response.getCallToAction()) ? View.VISIBLE : View.INVISIBLE);
 
@@ -171,25 +173,27 @@ public class MainActivity extends AppCompatActivity {
     private void inflateAndRegisterFB(FBNativeBannerAdResponse response) {
 
         // Add the Ad view into the ad container.
-
-        NativeAdLayout nativeAdLayout = findViewById(R.id.native_banner);
+        ConstraintLayout adFrame = findViewById(R.id.ad_container);
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-        // Inflate the Ad view.  The layout referenced is the one you created in the last step.
-        LinearLayout adView = (LinearLayout) inflater.inflate(R.layout.native_banner, nativeAdLayout, false);
-        nativeAdLayout.addView(adView);
+
+        ConstraintLayout adView = (ConstraintLayout) inflater.inflate(R.layout.facebook_native_banner, adFrame, false);
+        adFrame.addView(adView);
+
+        // Get the NativeAdLayout from the inflated ConstraintLayout
+        NativeAdLayout nativeAdLayout = adView.findViewById(R.id.fb_native_ad_layout);
 
         // Add the AdChoices icon
-        RelativeLayout adChoicesContainer = adView.findViewById(R.id.ad_choices_container);
+        RelativeLayout adChoicesContainer = adView.findViewById(R.id.fb_ad_choices_container);
         AdOptionsView adOptionsView = new AdOptionsView(MainActivity.this, (NativeAdBase) response.getNativeElements().get(NativeAdResponse.NATIVE_ELEMENT_OBJECT), nativeAdLayout);
         adChoicesContainer.removeAllViews();
         adChoicesContainer.addView(adOptionsView, 0);
 
         // Create native UI using the ad metadata.
-        TextView nativeAdTitle = adView.findViewById(R.id.native_ad_title);
-        TextView nativeAdSocialContext = adView.findViewById(R.id.native_ad_social_context);
-        TextView sponsoredLabel = adView.findViewById(R.id.native_ad_sponsored_label);
-        ImageView nativeAdIconView = adView.findViewById(R.id.native_icon_view);
-        Button nativeAdCallToAction = adView.findViewById(R.id.native_ad_call_to_action);
+        TextView nativeAdTitle = adView.findViewById(R.id.fb_title);
+        TextView nativeAdSocialContext = adView.findViewById(R.id.fb_social_context);
+        TextView sponsoredLabel = adView.findViewById(R.id.fb_sponsored_label);
+        ImageView nativeAdIconView = adView.findViewById(R.id.fb_icon);
+        Button nativeAdCallToAction = adView.findViewById(R.id.fb_cta);
 
         // Set the Text.
         nativeAdCallToAction.setText(response.getCallToAction());

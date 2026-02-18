@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/colorWhite"
+android:id="@+id/constraintLayout"
+tools:context=".MainActivity">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Load FAN Ad"
-        android:layout_alignParentTop="true"
-        android:id="@+id/load_fan"
-        android:onClick="loadAd"/>
+<!-- Add a top Guideline to avoid scrolling under the activity label (toolbar/actionbar) -->
+<androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guideline_top"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Load RTB Ad"
-        android:layout_below="@id/load_fan"
-        android:onClick="loadAd"/>
+<Button
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="Load Ad"
+    android:id="@+id/load_ad"
+    android:onClick="loadAd"
+    app:layout_constraintTop_toBottomOf="@id/guideline_top"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.facebook.ads.NativeAdLayout
-        android:id="@+id/native_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/ad_container"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/load_ad"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
